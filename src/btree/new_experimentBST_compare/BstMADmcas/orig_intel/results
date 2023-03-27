@@ -1,0 +1,44 @@
+ ./bstTT 32 1000000 | grep "Elapsed time"
+Elapsed time    = 0.072630 seconds
+ ./bstTT 32 1000000 | grep "Elapsed time"
+Elapsed time    = 0.081861 seconds
+
+./bstTT 64 1000000 | grep "Elapsed time"
+Elapsed time    = 0.068795 seconds
+ ./bstTT 64 1000000 | grep "Elapsed time"
+Elapsed time    = 0.067812 seconds
+
+./bstTT 128 1000000 | grep "Elapsed time"
+Elapsed time    = 0.067732 seconds
+ ./bstTT 128 1000000 | grep "Elapsed time"
+Elapsed time    = 0.066676 seconds
+
+./bstTT 256 1000000 | grep "Elapsed time"
+Elapsed time    = 0.069592 seconds
+ ./bstTT 256 1000000 | grep "Elapsed time"
+Elapsed time    = 0.069500 seconds
+
+./bstTT 16 1000000 | grep "Elapsed time"
+Elapsed time    = 0.076255 seconds
+ ./bstTT 16 1000000 | grep "Elapsed time"
+Elapsed time    = 0.074128 seconds
+
+./bstTT 8 1000000 | grep "Elapsed time"
+Elapsed time    = 0.068285 seconds
+ ./bstTT 8 1000000 | grep "Elapsed time"
+Elapsed time    = 0.068257 seconds
+
+./bstTT 4 1000000 | grep "Elapsed time"
+Elapsed time    = 0.085786 seconds
+ ./bstTT 4 1000000 | grep "Elapsed time"
+Elapsed time    = 0.091935 seconds
+
+./bstTT 2 1000000 | grep "Elapsed time"
+Elapsed time    = 0.113220 seconds
+ ./bstTT 2 1000000 | grep "Elapsed time"
+Elapsed time    = 0.107477 seconds
+
+./bstTT 1 1000000 | grep "Elapsed time"
+Elapsed time    = 0.146651 seconds
+ ./bstTT 1 1000000 | grep "Elapsed time"
+Elapsed time    = 0.150037 seconds

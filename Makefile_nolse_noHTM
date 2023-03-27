@@ -1,0 +1,81 @@
+# Configurable options
+# MODE = release | debug (default: release)
+ MODE = debug
+
+# Management PC specific settings
+OS_NAME := $(shell uname -s)
+ifeq ($(OS_NAME),Darwin) # for OS X, use build in tools
+CORE_NUM := $(shell sysctl -n hw.ncpu)
+else # Linux and other
+CORE_NUM := $(shell nproc)
+endif
+
+ifneq ($(CORE_SPEED_KHz), )
+CFLAGS += -DCORE_NUM=${CORE_NUM}
+else
+CFLAGS += -DCORE_NUM=4
+endif
+CFLAGS += -DDEFAULT
+$(info *** Using as a default number of cores: $(CORE_NUM) on 1 socket)
+$(info ***)
+
+# Generic configurations
+CC          := /home/mnagabh/summer_gem5/gnu-gcc/bin/aarch64-none-linux-gnu-gcc
+C++          := /home/mnagabh/summer_gem5/gnu-gcc/bin/aarch64-none-linux-gnu-g++
+###CFLAGS += -O3 -DINTEL -fomit-frame-pointer -march=native -static
+#CFLAGS += --std=gnu99 -pedantic -Wall
+#CFLAGS += -fno-strict-aliasing
+#CFLAGS += -D_GNU_SOURCE
+#CFLAGS += -D_REENTRANT
+CFLAGS += -I include -lpthread
+CFLAGS_CPP      += -DARM -march=armv8-a+tme+nolse -MMD -MP -pthread -std=c++14 -Wall -g -DHAVE_THREADS -DNDEBUG=1 -pthread -static -Wl,-rpath,/home/mnagabh/summer_gem5/gnu-gcc/lib64/ -lrt -Wl,--whole-archive -lpthread -Wl,--no-whole-archive
+CFLAGS      += -DARM -march=armv8-a+tme+nolse -MMD -MP -pthread -std=c11 -Wall -g -DHAVE_THREADS -DNDEBUG=1 -pthread -static -Wl,-rpath,/home/mnagabh/summer_gem5/gnu-gcc/lib64/ -lrt -Wl,--whole-archive -lpthread -Wl,--no-whole-archive
+##LDFLAGS += -lpthread -static
+LDFLAGS += -lrt -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -static -fomit-frame-pointer
+
+	###CFLAGS += -O3 -DNDEBUG
+ifneq ($(MODE),debug)
+	CFLAGS += -O3
+else
+	CFLAGS += -g
+endif
+
+OUT = out
+EXEC = $(OUT)/test-noHTMLLs
+all: $(EXEC)
+
+deps =
+
+    #src/noHTMLLs/list.o \
+noHTMLLs_OBJS =
+noHTMLLs_OBJS += \
+    src/noHTMLLs/thread.o \
+    src/noHTMLLs/list.o \
+    src/noHTMLLs/main.o
+deps += $(noHTMLLs_OBJS:%.o=%.o.d)
+
+$(OUT)/test-noHTMLLs: $(noHTMLLs_OBJS)
+	@mkdir -p $(OUT)
+	$(C++) -o $@ $^ $(LDFLAGS)
+src/noHTMLLs/%.o: src/noHTMLLs/%.c
+	$(C++) $(CFLAGS_CPP) -DLOCKFREE -o $@ -MMD -MF $@.d -c $<
+
+
+check: $(EXEC)
+	bash scripts/test_correctness.sh
+
+bench: $(EXEC)
+	bash scripts/run_ll.sh
+	bash scripts/create_plots_ll.sh >/dev/null
+	@echo Check the plots generated in directory 'out/plots'.
+
+clean:
+	$(RM) -f $(EXEC)
+	$(RM) -f $(LOCK_OBJS) $(LOCKFREE_OBJS) $(STACKlf_OBJS) $(LLlfM_OBJS) $(deps)
+
+distclean: clean
+	$(RM) -rf out
+
+.PHONY: all check clean distclean
+
+-include $(deps)

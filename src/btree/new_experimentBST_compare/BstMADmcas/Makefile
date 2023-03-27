@@ -1,0 +1,1 @@
+arm-linux-gnueabihf-g++ -DARM -MMD -MP -pthread -std=gnu++11 -Wall -O2 -DHAVE_THREADS -DNDEBUG=1 -pthread -static -Wl,-rpath,/home/mnagabh/summer_gem5/gnu-gcc/lib64/ -lrt -Wl,--whole-archive -lpthread -Wl,--no-whole-archive -DNDEBUG -fpermissive -o bst main.cpp thread.c

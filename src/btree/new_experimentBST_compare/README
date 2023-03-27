@@ -1,0 +1,11 @@
+## this is for MAD-MCAS; all the flags and libary we were using looks
+like works for aarch-64 or something so changed the gnu-compile for
+arm tot he generic old one with armv6 or something. 
+
+---see the Makefile to compile hence!
+
+
+Becuase there is no 128-bit CAS in ARM arch, we cannot compile for
+aarch-64 for a DCAS-using single CAS on ARM machines; instead we do
+for 32-bit ARM arch such that we use a 64-bit CAS for a DCAS on the
+    union!!

@@ -1,0 +1,7 @@
+mod3- add init 2000; mod4 add init 1000 and addmod later
+mod2-only everything modular; plus add function written similar to
+remove function--safe
+mod5- derived from mod2; only change is tm.h doesnt get spinlock- just
+returns
+
+mod6- re-aligned somemore and made checks data>=val atomic
